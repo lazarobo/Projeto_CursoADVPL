@@ -1,0 +1,23 @@
+{
+    "totvsLanguageServer.welcomePage": false,
+
+    "totvsLanguageServer.environments": [
+        {
+            "id": "PROTHEUS2310",
+            "type": "totvs_server_protheus",
+            "includeList": [
+                "C:/TOTVS/Protheus2310/Protheus/include"
+            ],
+            "server": "localhost",
+            "port": 1234,
+            "user": "admin",
+            "password": "", 
+            "environment": "ENVIRONMENT",
+            "secure": false,
+            "company": "99",
+            "branch": "01"
+        }
+    ],
+
+    "totvsLanguageServer.selectedEnvironment": "PROTHEUS2310"
+}
