@@ -14,7 +14,7 @@
 (examples)
 @see (links_or_references)
 /*/
-User Function fADVPLA04()
+User Function ADVPLA04()
 
 Local oBrowse
 	//Montagem do Browse principal	
@@ -41,10 +41,16 @@ Return aRotina
 //Construcao do mdelo
 Static Function ModelDef()
 	Local oModel
-	Local oStruZZ4 := FWFormStruct(1,"ZZ4")
+	Local oStruZZ4 := FWFormStruct(1,"ZZ4") //zz4 - cabeçalho
+	Local oStruZZ5 := FWFormStruct(1,"ZZ5") //zz5 - (grid)
 
 	oModel := MPFormModel():New("MD_ZZ4") 
-	oModel:addFields('MASTERZZ4',,oStruZZ4)
+	oModel:addFields('MASTERZZ4',,oStruZZ4) //Campos de cabeçalho
+    oModel:AddGrid('DETAILSZZ5','MASTERZZ4', oStruZZ5) //Estrutura da Grid (ITENS, MODELO PRINCIPAL, ESTRUTURA DA GRID)
+
+    oModel.SetRelation('DETAILSZZ5', { {'ZZ5_FILIAL', 'xFilial('ZZ5')'}, {ZZ5_CODZZ4, 'ZZ4_CODIGO'} }, ZZ5->(IndexKey(1))) //Relacionamento entre o cabeçalho e a grid
+
+
 	oModel:SetPrimaryKey({'ZZ4_FILIAL', 'ZZ4_CODIGO'})
 
 Return oModel
