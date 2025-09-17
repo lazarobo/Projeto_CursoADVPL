@@ -119,6 +119,7 @@ User Function ADPLA04b()
 	Local cLoja		:= SuperGetMV('MS_LOJA', .F., '01')
 	
 	Private lMsErroAuto := .F.
+
 		
 	If ZZ4->ZZ4_STATUS == 'A'
 		
