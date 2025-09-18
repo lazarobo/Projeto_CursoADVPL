@@ -15,22 +15,22 @@
 /*/
 User Function ADVPLA01()
 
-    Local cAlias := "ZZ1"
-    Local cTitulo := 'Grupo de Despesas'
-    Local cVldDel := "U_ADVPL01a()"
-    Local cVldAlt := '.T.'
+    Local cAlias := "ZZ1" //Nome da tabela
+    Local cTitulo := 'Grupo de Despesas' //Titulo do cadastro
+    Local cVldDel := "U_ADVPL01a()" //Validação para exclusão
+    Local cVldAlt := '.T.' //Validação para alteração
 
-    AxCadastro(cAlias, cTitulo, cVldDel, cVldAlt)
+    AxCadastro(cAlias, cTitulo, cVldDel, cVldAlt) //Chamada a função genérica de cadastro
 
 Return 
 
 user function ADVPL01a()
     Local lRet := .T.
 
-    If MsgYesNo('Tem certeza que deseja excluir?')
-        lRet := .T.
+    If MsgYesNo('Tem certeza que deseja excluir?') //Se o usuário confirmar a exclusão
+        lRet := .T. //Permite a exclusão
     Else
-        lRet := .F. 
+        lRet := .F. //Cancela a exclusão
     Endif
 
 Return lRet

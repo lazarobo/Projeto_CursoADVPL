@@ -104,6 +104,6 @@ user function ADVPLA02()
 
 return
 
-user function ADVPL02a
+user function ADVPL02a //Exemplo de rotina personalizada
 	ApMsgInfo('Olá aRotina!!!!')
 Return

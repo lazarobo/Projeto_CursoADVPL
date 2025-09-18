@@ -7,12 +7,13 @@ User Function ADVPLA04()
 	//Montagem do Browse principal	
 	oBrowse := FWMBrowse():New()
 
-	oBrowse:AddLegend("ZZ4->ZZ4_STATUS=='A'", "GREEN"	, "Aberto")
+	//Legendas do status, as bolinhas que ficam do lado 
+	oBrowse:AddLegend("ZZ4->ZZ4_STATUS=='A'", "GREEN"	, "Aberto") //os parametros são: condição, cor, descrição
 	oBrowse:AddLegend("ZZ4->ZZ4_STATUS=='E'", "RED"		, "Efetivado")
 	oBrowse:AddLegend("ZZ4->ZZ4_STATUS=='P'", "YELLOW"	, "Pago")
 	oBrowse:AddLegend("ZZ4->ZZ4_STATUS=='C'", "CANCEL"	, "Cancelado")
 
-	oBrowse:SetAlias('ZZ4')
+	oBrowse:SetAlias('ZZ4') 
 	oBrowse:SetDescription('Cadastro de Movimentos')
 	oBrowse:SetMenuDef('ADVPLA04')
 	oBrowse:Activate()
@@ -23,7 +24,7 @@ Return
 Static Function MenuDef()
 	Local aRotina := {}
 
-	aAdd( aRotina, { 'Visualizar'	, 'VIEWDEF.ADVPLA04'	, 0, 2, 0, NIL } ) 
+	aAdd( aRotina, { 'Visualizar'	, 'VIEWDEF.ADVPLA04'	, 0, 2, 0, NIL } ) //os parametros são: descrição, funcao, ícone, ação, posição, função
 	aAdd( aRotina, { 'Incluir' 		, 'VIEWDEF.ADVPLA04'	, 0, 3, 0, NIL } )
 	aAdd( aRotina, { 'Alterar' 		, 'VIEWDEF.ADVPLA04'	, 0, 4, 0, NIL } )
 	aAdd( aRotina, { 'Excluir' 		, 'VIEWDEF.ADVPLA04'	, 0, 5, 0, NIL } )
@@ -41,16 +42,13 @@ Static Function ModelDef()
 	Local oStruZZ4 := FWFormStruct(1,"ZZ4")
 	Local oStruZZ5 := FWFormStruct(1,"ZZ5")
 
-	oModel := MPFormModel():New("MD_ZZ4") 
+	oModel := MPFormModel():New("MD_ZZ4")  // Nome do modelo
+	oModel:addFields('MASTERZZ4',,oStruZZ4) // Adiciona a estrutura ao modelo
+	oModel:AddGrid('DETAILSZZ5', 'MASTERZZ4', oStruZZ5, {|oModel| U_ADVPL04A(oModel) }) // Itens da tabela pai, detalhe aponta para o cabecalho 
+	oModel:SetRelation('DETAILSZZ5', { {'ZZ5_FILIAL', 'xFilial("ZZ5")'}, {'ZZ5_CODZZ4', 'ZZ4_CODIGO'} }, ZZ5->(IndexKey(1))) //define a relacao entre as tabelas, zz5filial com filial e zz5codzz4 com o codigo do movimento (não entendi mt bem essa parte)
+	oModel:SetPrimaryKey({'ZZ4_FILIAL', 'ZZ4_CODIGO'}) // Define a chave primaria
 
-	oModel:addFields('MASTERZZ4',,oStruZZ4)
-	oModel:AddGrid('DETAILSZZ5', 'MASTERZZ4', oStruZZ5, {|oModel| U_ADVPL04A(oModel) }) 
-
-	oModel:SetRelation('DETAILSZZ5', { {'ZZ5_FILIAL', 'xFilial("ZZ5")'}, {'ZZ5_CODZZ4', 'ZZ4_CODIGO'} }, ZZ5->(IndexKey(1)))
-
-	oModel:SetPrimaryKey({'ZZ4_FILIAL', 'ZZ4_CODIGO'})
-
-	oModel:GetModel('DETAILSZZ5'):SetUniqueLine({'ZZ5_CODZZ2'})
+	oModel:GetModel('DETAILSZZ5'):SetUniqueLine({'ZZ5_CODZZ2'}) // Define que o campo zz5_codzz2 deve ser unico no detalhe
 
 	oModel:AddCalc('QUANT', 'MASTERZZ4', 'DETAILSZZ5', 'ZZ5_TOTAL', 'QUANTIDADE', 'COUNT' )
 
@@ -70,13 +68,13 @@ Static Function ViewDef()
 	oView:CreateHorizontalBox( 'BOX_FORM_ZZ4', 30)
 	oView:SetOwnerView('FORM_ZZ4','BOX_FORM_ZZ4')
 
-	oView:CreateHorizontalBox( 'BOX_FORM_ZZ5', 60)	
-	oView:AddGrid('VIEW_ZZ5', oStrZZ5, 'DETAILSZZ5')
-	oView:SetOwnerView('VIEW_ZZ5', 'BOX_FORM_ZZ5')
+	oView:CreateHorizontalBox( 'BOX_FORM_ZZ5', 60)	// Cria um box horizontal
+	oView:AddGrid('VIEW_ZZ5', oStrZZ5, 'DETAILSZZ5') // Adiciona os campos da estrutura na visualizacao
+	oView:SetOwnerView('VIEW_ZZ5', 'BOX_FORM_ZZ5') // Define onde o grid vai aparecer, sem isso ele aparece embaixo do formulario
 
-	oView:EnableTitleView('VIEW_ZZ5', 'Itens do Movimento')
+	oView:EnableTitleView('VIEW_ZZ5', 'Itens do Movimento') // Titulo do grid
 
-	oQuant	:= FwCalcStruct(oModel:GetModel('QUANT'))
+	oQuant	:= FwCalcStruct(oModel:GetModel('QUANT')) // Cria a estrutura do campo calculado
 
 	oView:CreateHorizontalBox( 'BOX_FORM_QUANT', 10)
 
