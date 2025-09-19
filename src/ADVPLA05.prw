@@ -52,7 +52,7 @@ User Function ADVPLA05()
 	oGetAte := TGet():New( 013, 075, { | u | If( PCount() == 0, dDataAte, dDataAte := u ) },oPanel01, 060, 010, "@D",, 0, 16777215,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F. ,,"dDataAte",,,,.T.  ) //campo data
 
 	oBrowse := FwBrowse():New(oPanel02)
- //cria o browser
+ 	//cria o browser
 
 	oBrowse:disableReport()	
 	oBrowse:disableConfig()

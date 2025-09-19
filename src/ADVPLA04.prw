@@ -66,7 +66,7 @@ Static Function ViewDef()
 
 	oView:AddField('FORM_ZZ4' , oStrZZ4,'MASTERZZ4' ) 
 	oView:CreateHorizontalBox( 'BOX_FORM_ZZ4', 30)
-	oView:SetOwnerView('FORM_ZZ4','BOX_FORM_ZZ4')
+	oView:SetOwnerView('FORM_ZZ4','BOX_FORM_ZZ4') // Define o box como dono do campo
 
 	oView:CreateHorizontalBox( 'BOX_FORM_ZZ5', 60)	// Cria um box horizontal
 	oView:AddGrid('VIEW_ZZ5', oStrZZ5, 'DETAILSZZ5') // Adiciona os campos da estrutura na visualizacao
@@ -123,7 +123,7 @@ User Function ADPLA04b()
 		
 		If MsgYesNo('Confirma a efetivacao?')
 		
-			aArray := { { "E2_PREFIXO" , cPrefix            , NIL },;
+			aArray := { { "E2_PREFIXO" , cPrefix            , NIL },; // os parametros são: campo da tabela, valor a ser atribuido, função de formatação (NIL se não tiver)
             { "E2_NUM"     , PadL(ZZ4->ZZ4_CODIGO,6) , NIL },;
             { "E2_TIPO"    , cTipo              , NIL },;
             { "E2_NATUREZ" , cNatu              , NIL },;
